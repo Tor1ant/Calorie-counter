@@ -1,13 +1,12 @@
-import java.util.Arrays;
 
 public class StepTracker {
     int startSteps = 10000;
-
+    final int months = 12;
     MonthData[] monthToData;
 
 
     public StepTracker() {
-        monthToData = new MonthData[12];
+        monthToData = new MonthData[months];
         for (int i = 0; i < monthToData.length; i++) {
             monthToData[i] = new MonthData();
         }
@@ -24,13 +23,12 @@ public class StepTracker {
     void printStepsInDay(int month) {
         for (int i = 0; i < monthToData[month].days.length; i++) {
 
-            System.out.print(i + 1 + " день: " + monthToData[month - 1].days[i]);  //", "
-            if (i == monthToData[month].days.length - 1) {
-                System.out.print("");
-            } else {
+            System.out.print(i + 1 + " день: " + monthToData[month - 1].days[i]);
+            if (i != monthToData[month].days.length - 1) {
                 System.out.print(", ");
             }
         }
+        System.out.println();
     }
 
     void printAllStepsInMonth(int month) {
@@ -38,7 +36,7 @@ public class StepTracker {
         for (int i = 0; i < monthToData[month].days.length; i++) {
             sum += monthToData[month - 1].days[i];
         }
-        System.out.println("\n" + "Общее количество шагов за месяц № " + month + " составляет: " + sum);
+        System.out.println("Общее количество шагов за месяц № " + month + " составляет: " + sum);
     }
 
     void printMaxSteps(int month) {
@@ -72,31 +70,27 @@ public class StepTracker {
         System.out.println("Пройденная дистанция: " + sumKM + " км.");
     }
 
-    void printBurnedKilocalories(int month) {
+    void printStepsToKilocalories(int month) {
         Converter converter = new Converter();
         double sumBurnKilocalories = 0;
         for (int i = 0; i < monthToData[month].days.length; i++) {
-            sumBurnKilocalories += converter.burnedKilocalories(monthToData[month - 1].days[i]);
+            sumBurnKilocalories += converter.stepsToKilocalories(monthToData[month - 1].days[i]);
         }
         System.out.println("Количество сожжённых килокалорий: " + sumBurnKilocalories);
     }
 
     void printTheBestSeriesOfSteps(int month) {
-        int count = 0;
+        int count = 0, max = 0;
         for (int i = 0; i < monthToData[month].days.length; i++) {
-            if (monthToData[month - 1].days[i] > startSteps) {
+            if (monthToData[month - 1].days[i] >= startSteps) {
                 count++;
+            } else {
+                count = 0;
+            }
+            if (count > max) {
+                max = count;
             }
         }
-        System.out.println("Лучшая серия: " + count);
-    }
-}
-
-class MonthData {
-
-    int[] days = new int[30];
-
-    public MonthData() {
-        Arrays.fill(days, 0);
+        System.out.println("Лучшая серия: " + max);
     }
 }

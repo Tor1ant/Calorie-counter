@@ -1,2 +1,2 @@
-# java-sprint1-hw
-First sprint homework
+# Simple calorie Tracker
+### an example of a calorie tracker, the data in which is entered manually.
